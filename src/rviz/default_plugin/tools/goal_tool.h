@@ -36,6 +36,7 @@
 # include <ros/ros.h>
 
 # include "rviz/default_plugin/tools/pose_tool.h"
+# include <QObject>
 #endif
 
 namespace rviz
@@ -43,6 +44,7 @@ namespace rviz
 class Arrow;
 class DisplayContext;
 class StringProperty;
+class BoolProperty;
 
 class GoalTool: public PoseTool
 {
@@ -51,18 +53,23 @@ public:
   GoalTool();
   virtual ~GoalTool() {}
   virtual void onInitialize();
+  virtual int processMouseEvent( ViewportMouseEvent& event ); // ADDED
 
 protected:
   virtual void onPoseSet(double x, double y, double theta);
 
 private Q_SLOTS:
   void updateTopic();
+  void updateAutoDeactivate();
 
 private:
   ros::NodeHandle nh_;
   ros::Publisher pub_;
 
   StringProperty* topic_property_;
+
+protected: 
+  BoolProperty* auto_deactivate_property_;
 };
 
 }
